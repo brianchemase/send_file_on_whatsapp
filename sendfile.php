@@ -16,13 +16,13 @@
 				<div class="col-sm-3"></div>
 				<div class="col-sm-6">
 					<div class="card text-center">
-						<div class="card-header bg-primary text-white text-uppercase">
+						<div class="card-header bg-success text-white text-uppercase">
 							How to send file in whatsapp using php
 						</div>
 						<div class="card-body">
 							<form action="" method="POST" enctype="multipart/form-data">
 								<div class="form-group">
-									<input type="text" name="mobile" placeholder="Enter Mobile Number" class="form-control" required>
+									<input type="text" name="mobile" placeholder="Enter Mobile Number" class="form-control" maxlength="10" required>
 								</div>
 								<div class="form-group">
 									<input type="file" class="form-control" name="image" required="">
@@ -36,7 +36,7 @@
 							</form>
 						</div>
 						<div class="card-footer text-center">
-							&copy;Developed by Er Vivek Gupta
+							&copy;Modified by Anikayi
 						</div>
 					</div>
 				</div>
@@ -55,18 +55,23 @@ if(isset($_POST['submit']))
 	$mobile=$_POST['mobile'];
 	$message=$_POST['message'];
 	$filename=$_FILES['image']['name'];
-	$file_tmp=$FILES['image']['tmp_name'];
-	move_uploaded_file($file_tmp,$filename);
+	$file_tmp=$_FILES['image']['tmp_name'];
+	$location="images/";
+	move_uploaded_file($file_tmp,$location.$filename);
 
 	//Whatsapp API
 	$apiURL = 'https://eu138.chat-api.com/instance136593/';
 $token = '9d4j8zvj4eantnmr';
 
-$phone = $mobile;
+//$phone = $mobile;
+
+	$tel= substr($mobile, 1);
+    	$code="254";// your country code
+    	$to = $code.$tel;
 
 $data = json_encode(array(
-    'chatId'=>$phone.'@c.us',
-    'body'=>'https://domain.com/PHP/'.$filename,//FULL PATH and file name
+    'chatId'=>$to.'@c.us',
+    'body'=>'https://domain.com/images/'.$filename,//FULL PATH and file name
     'filename'=>$filename,
     'caption'=>$message
 ));
